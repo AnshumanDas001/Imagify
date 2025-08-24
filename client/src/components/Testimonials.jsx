@@ -23,7 +23,7 @@ const Testimonials = () => {
                 <p className='text-gray-500 mb-4'>{testimonial.role}</p>
                 <div className='flex mb-4'>
                     {Array(testimonial.stars).fill().map((item,index)=>(
-                        <img key={index} src={assets.rating_star} alt="" srcset="" />
+                        <img key={index} src={assets.rating_star} alt="" />
                     ))}
                 </div>
                 <p className='text-center text-sm text-gray-600'>{testimonial.text}</p>

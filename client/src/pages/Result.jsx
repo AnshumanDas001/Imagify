@@ -2,20 +2,47 @@ import React from 'react'
 import { useState } from 'react'
 import { assets } from '../assets/assets'
 import { motion } from 'framer-motion'
+import { useContext, useEffect } from 'react'
+import { AppContext } from '../context/AppContext'
 
 const Result = () => {
   const [image,setImage]=useState(assets.sample_img_1)
   const [isImageLoaded,setisImageLoaded]=useState(false)
   const [loading,setLoading]=useState(false)
   const [input,setInput]=useState('')
+  const {generateImage, user, setShowLogin} = useContext(AppContext)
+
+  useEffect(() => {
+    if (!user) {
+      setShowLogin(true)
+    }
+  }, [user, setShowLogin])
   const onSubmitHandler=async(e)=>{
-    
+    e.preventDefault();
+    setLoading(true)
+    if(input){
+      const image = await generateImage(input)
+      if(image){
+        setisImageLoaded(true)
+        setImage(image)
+      }
+      
+        setLoading(false)
+    }
   }
+  if (!user) {
+    return (
+      <div className='flex flex-col min-h-[90vh] justify-center items-center'>
+        <p className='text-gray-500'>Please log in to generate images</p>
+      </div>
+    )
+  }
+
   return (
     <motion.form
     initial={{opacity:0.2, y:100}}
     transition={{duration:1}} 
-    whileinView={{opacity:1, y:0}}
+    whileInView={{opacity:1, y:0}}
     viewport={{once:true}}
     onSubmit={onSubmitHandler} className='flex flex-col min-h-[90vh] justify-center items-center'>
     <div>
